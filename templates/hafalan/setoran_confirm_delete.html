@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}
+Hapus Setoran
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header modern-page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            Konfirmasi
+        </p>
+
+        <h1>
+            Hapus Setoran Hafalan
+        </h1>
+
+        <p class="page-description">
+            Pastikan data yang akan dihapus sudah benar.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="modern-delete-wrapper">
+
+    <div class="modern-delete-card">
+
+        <div class="delete-icon">
+            ⚠️
+        </div>
+
+        <h2>
+            {{ setoran.santri.nama }}
+        </h2>
+
+        <p>
+            {{ setoran.rentang_halaman }}
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="modern-form-actions">
+
+                <a class="button"
+                   href="{% url 'hafalan:list' %}">
+
+                    Batal
+
+                </a>
+
+                <button class="button btn-delete"
+                        type="submit">
+
+                    Hapus Data
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% load static %}
+
+<!doctype html>
+
+<html lang="id">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>
+        Login - SMHTAHFIDZ
+    </title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/app.css' %}?v=99">
+
+</head>
+
+<body class="login-body">
+
+<section class="login-wrapper">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+            ZBT
+        </div>
+
+        <h1>
+            SMHTAHFIDZ
+        </h1>
+
+        <p>
+            Sistem Monitoring Hafalan Santri
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="button primary login-button"
+                    type="submit">
+
+                Login
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

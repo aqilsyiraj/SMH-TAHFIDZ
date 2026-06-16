@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}Detail Laporan{% endblock %}
+{% block content %}
+
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Pelaporan Orang Tua</p>
+        <h1>Detail Laporan</h1>
+    </div>
+
+    <form action="{% url 'laporan:send' laporan.pk %}" method="post">
+        {% csrf_token %}
+        <button class="button primary" type="submit">
+            Kirim via Fonnte
+        </button>
+    </form>
+</section>
+
+<section class="modern-report-grid">
+
+    <article class="panel" style="padding:20px;">
+        <h2 style="margin-bottom:16px;">Ringkasan</h2>
+
+        <dl class="detail-list"
+            style="display:grid;grid-template-columns:auto 1fr;gap:10px 16px;">
+
+            <dt>Santri</dt>
+            <dd>{{ laporan.santri.nama }}</dd>
+
+            <dt>Orang Tua</dt>
+            <dd>{{ laporan.santri.nama_orang_tua }}</dd>
+
+            <dt>Nomor WhatsApp</dt>
+            <dd>{{ laporan.santri.nomor_wa_orang_tua }}</dd>
+
+            <dt>Periode</dt>
+            <dd>{{ laporan.periode_awal }} - {{ laporan.periode_akhir }}</dd>
+
+            <dt>Total Setoran</dt>
+            <dd>{{ laporan.total_setoran }}</dd>
+
+            <dt>Rata-rata Harian</dt>
+            <dd>{{ laporan.rata_rata_setoran_harian }}</dd>
+
+            <dt>Hafalan Terakhir</dt>
+            <dd>{{ laporan.hafalan_terakhir }}</dd>
+
+            <dt>Kategori Juz</dt>
+            <dd>{{ laporan.kategori_juz_terakhir }}</dd>
+
+            <dt>Status Pengiriman</dt>
+            <dd>{{ laporan.get_status_pengiriman_display }}</dd>
+
+        </dl>
+    </article>
+
+    <article class="modern-panel">
+        <h2 style="margin-bottom:16px;">Preview Pesan WhatsApp</h2>
+
+        <pre class="message-preview"
+             style="max-height:320px;overflow:auto;">{{ pesan }}</pre>
+    </article>
+
+</section>
+
+<section class="modern-panel chart-modern-panel">
+    <div class="panel-head">
+        <h2>Grafik Perkembangan Santri</h2>
+        <span class="trend-badge">{{ progress_status }}</span>
+    </div>
+
+    <canvas id="progressChart"></canvas>
+
+</section>
+
+<script>
+
+const ctx = document.getElementById('progressChart');
+
+const labels = [
+    {% for item in progress_chart %}
+        "{{ item.tanggal|date:'d/m' }}",
+    {% endfor %}
+];
+
+const data = [
+    {% for item in progress_chart %}
+        {{ item.value }},
+    {% endfor %}
+];
+
+const detailData = [
+    {% for item in progress_chart %}
+    {
+        tanggal: "{{ item.tanggal|date:'d/m/Y' }}",
+        jumlah_setoran: "{{ item.label|default:'-' }}",
+        surah: "{{ item.surah|default:'-' }}",
+        halaman: "{{ item.halaman|default:'-' }}",
+        kualitas: "{{ item.kualitas|default:'-' }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+];
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: labels,
+
+        datasets: [{
+            label: 'Jumlah Setoran Harian',
+            data: data,
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 7,
+            pointHoverRadius: 12,
+            pointHitRadius: 30,
+        }]
+    },
+
+    options: {
+        interaction: {
+        mode: 'nearest',
+        axis: 'x',
+        intersect: false
+        },
+
+        responsive: true,
+
+        plugins: {
+
+            tooltip: {
+
+                callbacks: {
+
+                    label: function(context) {
+
+                        const detail =
+                            detailData[context.dataIndex];
+
+                        return [
+
+                            "Jumlah Setoran : " + detail.jumlah_setoran,
+
+                            "Surah : " + detail.surah,
+
+                            "Halaman : " + detail.halaman,
+
+                            "Kualitas : " + detail.kualitas
+                        ];
+                    }
+                }
+            },
+
+            legend: {
+                display: true
+            }
+        },
+
+        scales: {
+            y: {
+                beginAtZero: true, max: 5, ticks: { stepSize: 1 }
+            }
+        }
+    }
+});
+
+</script>
+{% endblock %}

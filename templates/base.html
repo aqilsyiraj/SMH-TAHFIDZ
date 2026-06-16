@@ -1,0 +1,245 @@
+{% load static %}
+
+<!doctype html>
+
+<html lang="id">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <title>
+
+        {% block title %}
+        SMHTAHFIDZ-ZBT
+        {% endblock %}
+
+    </title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/app.css' %}?v=20" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+    <aside class="modern-sidebar">
+
+        <!-- =========================
+             BRAND
+        ========================== -->
+
+        <div class="sidebar-top">
+
+            <div class="modern-brand">
+
+                <div class="modern-brand-logo">
+                    ZBT
+                </div>
+
+                <div>
+
+                    <strong>
+                        SMHTAHFIDZ
+                    </strong>
+
+                    <small>
+                        Wilayah Zaid Bin Tsabit
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             USER INFO
+        ========================== -->
+
+        <div class="sidebar-user">
+
+            <div class="sidebar-user-avatar">
+
+                {{ request.user.username|slice:":1"|upper }}
+
+            </div>
+
+            <div>
+
+                <strong>
+
+                    {{ request.user.username }}
+
+                </strong>
+
+                <small>
+
+                    {{ request.user.get_role_display }}
+
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             NAVIGATION
+        ========================== -->
+
+        <nav class="modern-nav">
+
+            <a href="{% url 'beranda:index' %}">
+
+                <span>🏠</span>
+
+                Dashboard
+
+            </a>
+
+
+            <!-- ADMIN ONLY -->
+
+            {% if request.user.role == 'admin' %}
+
+            <a href="{% url 'santri:list' %}">
+
+                <span>👨‍🎓</span>
+
+                Santri
+
+            </a>
+
+            {% endif %}
+
+
+            <!-- ADMIN & PEMBINA -->
+
+            <a href="{% url 'hafalan:list' %}">
+
+                <span>📖</span>
+
+                Setoran
+
+            </a>
+
+
+            <a href="{% url 'laporan:list' %}">
+
+                <span>📄</span>
+
+                Laporan
+
+            </a>
+
+
+            <!-- ADMIN ONLY -->
+
+            {% if request.user.role == 'admin' %}
+
+            <a href="{% url 'whatsapp_gateway:list' %}">
+
+                <span>💬</span>
+
+                Log WhatsApp
+
+            </a>
+
+
+            <a href="/admin/">
+
+                <span>⚙️</span>
+
+                Django Admin
+
+            </a>
+
+            {% endif %}
+
+            {% if request.user.role == 'admin' %}
+
+            <a href="{% url 'whatsapp_gateway:setting' %}">
+
+                <span>📱</span>
+
+                Pengaturan WhatsApp
+
+            </a>
+
+            {% endif %}
+
+        </nav>
+        
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <div class="sidebar-footer">
+
+            <form action="{% url 'logout' %}"
+                  method="post">
+
+                {% csrf_token %}
+
+                <button class="logout-button"
+                        type="submit">
+
+                    🚪 Logout
+
+                </button>
+
+            </form>
+
+            <small>
+
+                SMHTAHFIDZ-ZBT v1.0
+
+            </small>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="modern-main">
+
+        {% if messages %}
+
+        <div class="messages">
+
+            {% for message in messages %}
+
+            <div class="message {{ message.tags }}">
+
+                {{ message }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</body>
+</html>

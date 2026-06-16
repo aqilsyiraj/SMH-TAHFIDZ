@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}
+Data Santri
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header modern-page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            Master Data
+        </p>
+
+        <h1>
+            Data Santri
+        </h1>
+
+        <p class="page-description">
+            Kelola seluruh data santri tahfidz secara realtime.
+        </p>
+
+    </div>
+
+    <a class="button primary modern-button"
+       href="{% url 'santri:create' %}">
+
+        + Tambah Santri
+
+    </a>
+
+</section>
+
+
+<section class="modern-panel search-panel">
+
+    <form class="modern-search-form"
+          method="get">
+
+        <input
+            type="search"
+            name="q"
+            value="{{ query }}"
+            placeholder="Cari nama santri..."
+        />
+
+        <button class="button primary"
+                type="submit">
+
+            Cari
+
+        </button>
+
+    </form>
+
+</section>
+
+
+<section class="modern-panel">
+
+    <div class="table-wrap">
+
+        <table class="modern-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Nama</th>
+                    <th>NIS</th>
+                    <th>Ustadz</th>
+                    <th>Orang Tua</th>
+                    <th>WhatsApp</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in santri %}
+
+                <tr>
+
+                    <td>
+
+                        <div class="student-name">
+
+                            <div class="student-avatar">
+                                {{ item.nama|slice:":1" }}
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    {{ item.nama }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+                        {{ item.nis }}
+                    </td>
+
+                    <td>
+                        {{ item.ustadz_pembina }}
+                    </td>
+
+                    <td>
+                        {{ item.nama_orang_tua }}
+                    </td>
+
+                    <td>
+                        {{ item.nomor_wa_orang_tua }}
+                    </td>
+
+                    <td>
+
+                        {% if item.aktif %}
+
+                            <span class="status-badge status-success">
+                                Aktif
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge status-failed">
+                                Nonaktif
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <div class="modern-action-group">
+
+                            <a class="modern-action-btn edit-btn"
+                               href="{% url 'santri:update' item.pk %}">
+
+                                Edit
+
+                            </a>
+
+                            <a class="modern-action-btn delete-btn"
+                               href="{% url 'santri:delete' item.pk %}"
+                               onclick="return confirm('Yakin ingin menghapus data ini?');">
+
+                                Hapus
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Belum ada data santri.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}

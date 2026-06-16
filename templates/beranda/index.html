@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard - SMHTAHFIDZ-ZBT
+{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-hero">
+
+    <div>
+
+        <p class="hero-eyebrow">
+            Sistem Monitoring Hafalan Santri
+        </p>
+
+        <h1>
+            Dashboard Tahfidz
+        </h1>
+
+        <p class="hero-description">
+            Monitoring perkembangan hafalan santri dan pengiriman laporan WhatsApp orang tua secara realtime.
+        </p>
+
+    </div>
+
+    <a class="button primary hero-button"
+       href="{% url 'hafalan:create' %}">
+        + Input Setoran
+    </a>
+
+</section>
+
+
+<section class="modern-stats-grid">
+
+    <article class="modern-stat-card">
+
+        <div class="stat-icon">
+            👨‍🎓
+        </div>
+
+        <div>
+
+            <span>Santri Aktif</span>
+
+            <strong>
+                {{ jumlah_santri }}
+            </strong>
+
+        </div>
+
+    </article>
+
+
+    <article class="modern-stat-card">
+
+        <div class="stat-icon">
+            📖
+        </div>
+
+        <div>
+
+            <span>Total Setoran</span>
+
+            <strong>
+                {{ jumlah_setoran }}
+            </strong>
+
+        </div>
+
+    </article>
+
+
+    <article class="modern-stat-card">
+
+        <div class="stat-icon">
+            📄
+        </div>
+
+        <div>
+
+            <span>Total Laporan</span>
+
+            <strong>
+                {{ jumlah_laporan }}
+            </strong>
+
+        </div>
+
+    </article>
+
+
+    <article class="modern-stat-card">
+
+        <div class="stat-icon">
+            💬
+        </div>
+
+        <div>
+
+            <span>Log WhatsApp</span>
+
+            <strong>
+                {{ jumlah_pesan }}
+            </strong>
+
+        </div>
+
+    </article>
+
+</section>
+
+
+<section class="modern-panel chart-modern-panel">
+
+    <div class="panel-head">
+
+        <div>
+
+            <h2>
+                Grafik Aktivitas Setoran
+            </h2>
+
+            <p class="panel-subtitle">
+                Statistik rata-rata setoran 30 hari terakhir
+            </p>
+
+        </div>
+
+        <span class="panel-badge">
+            30 Hari
+        </span>
+
+    </div>
+
+    <div class="dashboard-chart-container">
+
+        <canvas id="dashboardChart"></canvas>
+
+    </div>
+
+</section>
+
+
+<script>
+
+const labels = [];
+const dataValues = [];
+
+{% for item in grafik_rata_rata_setoran %}
+
+labels.push("{{ item.label }}");
+dataValues.push({{ item.rata_rata }});
+
+{% endfor %}
+
+const ctx = document.getElementById('dashboardChart');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: labels,
+
+        datasets: [{
+
+            label: 'Rata-rata Setoran',
+
+            data: dataValues,
+
+            borderWidth: 3,
+
+            tension: 0.4,
+
+            fill: true,
+
+            pointRadius: 5,
+
+            pointHoverRadius: 8,
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+                display: false
+            }
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+
+</script>
+
+
+<section class="content-grid">
+
+
+    <article class="modern-panel">
+
+        <div class="panel-head">
+
+            <h2>
+                Setoran Terbaru
+            </h2>
+
+            <a href="{% url 'hafalan:list' %}">
+                Lihat semua
+            </a>
+
+        </div>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Santri</th>
+                        <th>Hafalan</th>
+                        <th>Kategori</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in setoran_terbaru %}
+
+                    <tr>
+
+                        <td>
+                            {{ item.tanggal|date:"d/m/Y" }}
+                        </td>
+
+                        <td>
+                            {{ item.santri.nama }}
+                        </td>
+
+                        <td>
+                            {{ item.rentang_halaman }}
+                        </td>
+
+                        <td>
+                            {{ item.get_kategori_juz_display }}
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="4">
+                            Belum ada setoran.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </article>
+
+
+
+    <article class="modern-panel">
+
+        <div class="panel-head">
+
+            <h2>
+                Laporan Terbaru
+            </h2>
+
+            <a href="{% url 'laporan:list' %}">
+                Lihat semua
+            </a>
+
+        </div>
+
+        <div class="list">
+
+            {% for item in laporan_terbaru %}
+
+            <a class="modern-list-item"
+               href="{% url 'laporan:detail' item.pk %}">
+
+                <div>
+
+                    <strong>
+                        {{ item.santri.nama }}
+                    </strong>
+
+                    <span>
+                        {{ item.periode_awal }} - {{ item.periode_akhir }}
+                    </span>
+
+                </div>
+
+                <em class="
+                    status-badge
+
+                    {% if item.status_pengiriman == 'sent' %}
+                        status-success
+
+                    {% elif item.status_pengiriman == 'pending' %}
+                        status-pending
+
+                    {% elif item.status_pengiriman == 'simulated' %}
+                        status-simulated
+
+                    {% else %}
+                        status-failed
+                    {% endif %}
+                ">
+
+                    {{ item.get_status_pengiriman_display }}
+
+                </em>
+
+            </a>
+
+            {% empty %}
+
+            <p>
+                Belum ada laporan.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </article>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{% if edit_mode %}
+Edit Santri
+{% else %}
+Tambah Santri
+{% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-header modern-page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            Master Data
+        </p>
+
+        <h1>
+
+            {% if edit_mode %}
+
+                Edit Santri
+
+            {% else %}
+
+                Tambah Santri
+
+            {% endif %}
+
+        </h1>
+
+        <p class="page-description">
+            Lengkapi data santri tahfidz dengan benar.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="modern-form-wrapper">
+
+    <form class="modern-form-panel"
+          method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="modern-form-actions">
+
+            <a class="button"
+               href="{% url 'santri:list' %}">
+
+                Batal
+
+            </a>
+
+            <button class="button primary"
+                    type="submit">
+
+                Simpan Data
+
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}
+Setoran Hafalan
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header modern-page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            Aktivitas Tahfidz
+        </p>
+
+        <h1>
+            Setoran Hafalan
+        </h1>
+
+        <p class="page-description">
+            Monitoring seluruh aktivitas setoran hafalan santri.
+        </p>
+
+    </div>
+
+    <a class="button primary modern-button"
+       href="{% url 'hafalan:create' %}">
+
+        + Input Setoran
+
+    </a>
+
+</section>
+
+
+<section class="modern-panel">
+
+    <div class="table-wrap">
+
+        <table class="modern-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Tanggal</th>
+                    <th>Santri</th>
+                    <th>Jenis</th>
+                    <th>Kategori</th>
+                    <th>Hafalan</th>
+                    <th>Kualitas</th>
+                    <th>Aksi</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in setoran %}
+
+                <tr>
+
+                    <td>
+                        {{ item.tanggal|date:"d/m/Y" }}
+                    </td>
+
+                    <td>
+
+                        <div class="student-name">
+
+                            <div class="student-avatar">
+                                {{ item.santri.nama|slice:":1" }}
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    {{ item.santri.nama }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <span class="
+                            status-badge
+
+                            {% if item.jenis_setoran == 'ziyadah' %}
+                                status-success
+                            {% else %}
+                                status-simulated
+                            {% endif %}
+                        ">
+
+                            {{ item.get_jenis_setoran_display }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+                        {{ item.get_kategori_juz_display }}
+                    </td>
+
+                    <td>
+                        {{ item.rentang_halaman }}
+                    </td>
+
+                    <td>
+
+                        {% if item.kualitas == 'sangat_baik' %}
+
+                            <span class="status-badge status-success">
+                                Sangat Baik
+                            </span>
+
+                        {% elif item.kualitas == 'baik' %}
+
+                            <span class="status-badge status-simulated">
+                                Baik
+                            </span>
+
+                        {% elif item.kualitas == 'cukup' %}
+
+                            <span class="status-badge status-pending">
+                                Cukup
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge status-failed">
+                                Perlu Bimbingan
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <div class="modern-action-group">
+
+                            <a class="modern-action-btn edit-btn"
+                               href="{% url 'hafalan:update' item.pk %}">
+
+                                Edit
+
+                            </a>
+
+                            <a class="modern-action-btn delete-btn"
+                               href="{% url 'hafalan:delete' item.pk %}">
+
+                                Hapus
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Belum ada data setoran.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}

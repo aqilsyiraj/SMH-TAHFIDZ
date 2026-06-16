@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+Buat Laporan
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header modern-page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            Pelaporan Orang Tua
+        </p>
+
+        <h1>
+
+            {% if edit_mode %}
+
+                Edit Laporan Hafalan
+
+            {% else %}
+
+                Buat Laporan Hafalan
+
+            {% endif %}
+
+        </h1>
+
+        <p class="page-description">
+            Generate laporan perkembangan hafalan santri.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="modern-form-wrapper">
+
+    <form class="modern-form-panel"
+          method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="modern-form-actions">
+
+            <a class="button"
+               href="{% url 'laporan:list' %}">
+
+                Batal
+
+            </a>
+
+            <button class="button primary"
+                    type="submit">
+
+                Generate Laporan
+
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

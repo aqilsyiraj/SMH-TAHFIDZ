@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{% if edit_mode %}
+Edit Setoran
+{% else %}
+Input Setoran
+{% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-header modern-page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            Aktivitas Tahfidz
+        </p>
+
+        <h1>
+
+            {% if edit_mode %}
+
+                Edit Setoran Hafalan
+
+            {% else %}
+
+                Input Setoran Hafalan
+
+            {% endif %}
+
+        </h1>
+
+        <p class="page-description">
+            Lengkapi data setoran hafalan santri.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="modern-form-wrapper">
+
+    <form class="modern-form-panel"
+          method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="modern-form-actions">
+
+            <a class="button"
+               href="{% url 'hafalan:list' %}">
+
+                Batal
+
+            </a>
+
+            <button class="button primary"
+                    type="submit">
+
+                Simpan Setoran
+
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

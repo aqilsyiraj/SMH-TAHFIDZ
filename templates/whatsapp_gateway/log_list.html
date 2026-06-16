@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}
+Log WhatsApp
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header modern-page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            WhatsApp Gateway
+        </p>
+
+        <h1>
+            History Log WhatsApp
+        </h1>
+
+        <p class="page-description">
+            Monitoring seluruh aktivitas pengiriman WhatsApp laporan hafalan.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="modern-panel">
+
+    <div class="table-wrap">
+
+        <table class="modern-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Waktu</th>
+                    <th>Status</th>
+                    <th>Response</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in logs %}
+
+                <tr>
+
+                    <td>
+
+                        <div class="log-date">
+
+                            <strong>
+                                {{ item.created_at|date:"d/m/Y" }}
+                            </strong>
+
+                            <span>
+                                {{ item.created_at|date:"H:i" }}
+                            </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="
+                            status-badge
+
+                            {% if item.status == 'sent' %}
+                                status-success
+
+                            {% elif item.status == 'pending' %}
+                                status-pending
+
+                            {% elif item.status == 'simulated' %}
+                                status-simulated
+
+                            {% else %}
+                                status-failed
+                            {% endif %}
+                        ">
+
+                            {{ item.get_status_display }}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        {% if item.status == 'sent' %}
+
+                            <div class="response-box success-response">
+
+                                <strong>
+                                    Success
+                                </strong>
+
+                                <span>
+                                    Message successfully added to queue.
+                                </span>
+
+                            </div>
+
+                        {% elif item.status == 'pending' %}
+
+                            <div class="response-box pending-response">
+
+                                <strong>
+                                    Pending
+                                </strong>
+
+                                <span>
+                                    Message is waiting for processing.
+                                </span>
+
+                            </div>
+
+                        {% elif item.status == 'simulated' %}
+
+                            <div class="response-box simulated-response">
+
+                                <strong>
+                                    Simulation
+                                </strong>
+
+                                <span>
+                                    WhatsApp simulation mode active.
+                                </span>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="response-box failed-response">
+
+                                <strong>
+                                    Failed
+                                </strong>
+
+                                <span>
+                                    Message failed to send.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="3">
+
+                        Belum ada history log WhatsApp.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}

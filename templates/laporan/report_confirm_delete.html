@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+Hapus Laporan
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header modern-page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            Konfirmasi
+        </p>
+
+        <h1>
+            Hapus Laporan Hafalan
+        </h1>
+
+    </div>
+
+</section>
+
+
+<section class="modern-delete-wrapper">
+
+    <div class="modern-delete-card">
+
+        <div class="delete-icon">
+            ⚠️
+        </div>
+
+        <h2>
+            {{ laporan.santri.nama }}
+        </h2>
+
+        <p>
+            {{ laporan.periode_awal }}
+            -
+            {{ laporan.periode_akhir }}
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="modern-form-actions">
+
+                <a class="button"
+                   href="{% url 'laporan:list' %}">
+
+                    Batal
+
+                </a>
+
+                <button class="button btn-delete"
+                        type="submit">
+
+                    Hapus Laporan
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

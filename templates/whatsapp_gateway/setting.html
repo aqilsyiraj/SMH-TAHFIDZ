@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+Pengaturan WhatsApp
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            WhatsApp Gateway
+        </p>
+
+        <h1>
+            Pengaturan WhatsApp
+        </h1>
+
+    </div>
+
+</section>
+
+
+<section class="modern-panel">
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button class="button primary"
+                type="submit">
+
+            Simpan Pengaturan
+
+        </button>
+
+    </form>
+
+</section>
+
+{% endblock %}

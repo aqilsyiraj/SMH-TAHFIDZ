@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}
+Hapus Santri
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header modern-page-header">
+
+    <div>
+
+        <p class="eyebrow">
+            Manajemen Santri
+        </p>
+
+        <h1>
+            Konfirmasi Hapus
+        </h1>
+
+        <p class="page-description">
+            Pastikan data yang akan dihapus sudah benar.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="modern-panel confirm-panel">
+
+    <div class="confirm-icon">
+        ⚠️
+    </div>
+
+    <h2>
+        Hapus Data Santri?
+    </h2>
+
+    <p class="confirm-text">
+
+        Anda akan menghapus data santri:
+
+    </p>
+
+    <div class="confirm-student-card">
+
+        <strong>
+            {{ santri.nama }}
+        </strong>
+
+        <span>
+            NIS: {{ santri.nis }}
+        </span>
+
+    </div>
+
+    <p class="warning-text">
+
+        Data yang sudah dihapus tidak dapat dikembalikan.
+
+    </p>
+
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="confirm-actions">
+
+            <a href="{% url 'santri:list' %}"
+               class="modern-action-btn cancel-btn">
+
+                Batal
+
+            </a>
+
+            <button type="submit"
+                    class="modern-action-btn delete-btn">
+
+                Ya, Hapus
+
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}
