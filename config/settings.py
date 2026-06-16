@@ -29,8 +29,8 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-9k@7ko=*--+%9*52%ty+fb@bxz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost,testserver").split(",")
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost,testserver","smh-tahfidz.vercel.app").split(",")
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Application definition
 
