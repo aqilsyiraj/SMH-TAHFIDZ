@@ -27,11 +27,13 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-9k@7ko=*--+%9*52%ty+fb@bxz@jl3=%zh1a560ia!aslm9v^q")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost,testserver","smh-tahfidz.vercel.app").split(",")
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost,testserver,smh-tahfidz.vercel.app").split(",")
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://smh-tahfidz.vercel.app',
+]
 # Application definition
 
 INSTALLED_APPS = [
